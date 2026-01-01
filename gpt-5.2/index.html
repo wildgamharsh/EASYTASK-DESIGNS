@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EasyTask — Everything Your Event Business Needs to Take Bookings</title>
+  <meta name="description" content="EasyTask helps event organizers turn interest into confirmed bookings without chaos, confusion, or constant follow-ups. A professional storefront + dashboard to manage services and availability." />
+  <meta name="theme-color" content="#0B5FFF" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg0:#F7FAFF;
+      --bg1:#EEF5FF;
+      --card:#FFFFFF;
+      --ink:#0A1B3D;
+      --muted:#4A5B78;
+      --muted2:#6B7B97;
+      --line:rgba(10,27,61,.12);
+
+      --blue0:#0B5FFF;
+      --blue1:#2E8CFF;
+      --blue2:#6CB6FF;
+      --navy:#062B66;
+
+      --good:#0EA5E9;
+      --ok:#1D4ED8;
+
+      --shadow-lg: 0 24px 60px rgba(3, 22, 59, .14);
+      --shadow-md: 0 14px 34px rgba(3, 22, 59, .12);
+      --shadow-sm: 0 10px 24px rgba(3, 22, 59, .10);
+
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 12px;
+
+      --max: 1200px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Manrope, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--ink);
+      background:
+        radial-gradient(1000px 800px at 15% 0%, rgba(11,95,255,.12) 0%, rgba(11,95,255,0) 55%),
+        radial-gradient(900px 700px at 90% 10%, rgba(46,140,255,.10) 0%, rgba(46,140,255,0) 60%),
+        radial-gradient(900px 700px at 65% 85%, rgba(108,182,255,.14) 0%, rgba(108,182,255,0) 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+    }
+
+    a{color:inherit;text-decoration:none}
+    button, input{font:inherit}
+    ::selection{background:rgba(11,95,255,.18)}
+
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 22px}
+    .grid{display:grid; gap:24px}
+    .pill{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(11,95,255,.18);
+      background:rgba(255,255,255,.70);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 28px rgba(3,22,59,.08);
+      color:var(--navy);
+      font-weight:700;
+      letter-spacing:.1px;
+      font-size:13px;
+    }
+    .pill .dot{
+      width:10px;height:10px;border-radius:50%;
+      background: radial-gradient(circle at 35% 35%, #fff 0%, rgba(255,255,255,.2) 20%, rgba(255,255,255,0) 45%),
+                  linear-gradient(180deg, var(--blue1), var(--blue0));
+      box-shadow: 0 0 0 6px rgba(11,95,255,.10);
+    }
+
+    .btn{
+      border:0;
+      cursor:pointer;
+      border-radius:999px;
+      padding:12px 16px;
+      font-weight:800;
+      letter-spacing:.1px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+      white-space:nowrap;
+    }
+    .btn:active{transform:translateY(1px) scale(.99)}
+    .btn-primary{
+      color:white;
+      background: linear-gradient(135deg, var(--blue0), var(--blue1));
+      box-shadow: 0 14px 34px rgba(11,95,255,.28), 0 10px 22px rgba(3,22,59,.10);
+    }
+    .btn-primary:hover{transform:translateY(-1px); box-shadow: 0 18px 44px rgba(11,95,255,.33), 0 12px 26px rgba(3,22,59,.12)}
+    .btn-ghost{
+      color:var(--navy);
+      background: rgba(255,255,255,.70);
+      border:1px solid rgba(10,27,61,.14);
+      box-shadow: 0 12px 30px rgba(3,22,59,.08);
+    }
+    .btn-ghost:hover{transform:translateY(-1px); box-shadow: 0 16px 38px rgba(3,22,59,.10)}
+    .btn-small{padding:10px 14px; font-weight:800; font-size:14px}
+
+    .icon{
+      width:18px;height:18px; display:inline-block;
+    }
+    .icon svg{width:100%;height:100%}
+
+    /* Top nav */
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:50;
+      padding:14px 0;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(247,250,255,.88), rgba(247,250,255,.55));
+      border-bottom: 1px solid rgba(10,27,61,.08);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:900; letter-spacing:-.3px;
+    }
+    .logo{
+      width:38px; height:38px; border-radius:12px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.85) 0%, rgba(255,255,255,.1) 40%, rgba(255,255,255,0) 60%),
+        linear-gradient(135deg, #0B5FFF, #2E8CFF 55%, #6CB6FF);
+      box-shadow: 0 16px 30px rgba(11,95,255,.24), inset 0 1px 0 rgba(255,255,255,.55);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo:after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: conic-gradient(from 160deg, rgba(255,255,255,.0), rgba(255,255,255,.20), rgba(255,255,255,0));
+      animation: spin 8s linear infinite;
+      opacity:.9;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .brand span{font-size:16px}
+    .brand b{font-weight:900}
+    .navlinks{
+      display:flex; align-items:center; gap:18px;
+      color:rgba(10,27,61,.78);
+      font-weight:800;
+      font-size:14px;
+    }
+    .navlinks a{
+      padding:10px 10px;
+      border-radius:999px;
+      transition: background .18s ease, color .18s ease;
+      position:relative;
+      outline:none;
+    }
+    .navlinks a:hover{background:rgba(11,95,255,.08); color:var(--navy)}
+    .nav-cta{display:flex; align-items:center; gap:10px}
+    .hamburger{
+      display:none;
+      border:1px solid rgba(10,27,61,.14);
+      background: rgba(255,255,255,.70);
+      box-shadow: 0 12px 30px rgba(3,22,59,.08);
+      border-radius:12px;
+      padding:10px 12px;
+      cursor:pointer;
+    }
+    .hamburger .bars{width:20px; height:14px; position:relative}
+    .hamburger .bars span{
+      position:absolute; left:0; right:0; height:2px; border-radius:2px;
+      background:rgba(6,43,102,.92);
+      transition: transform .18s ease, top .18s ease, opacity .18s ease;
+    }
+    .hamburger .bars span:nth-child(1){top:0}
+    .hamburger .bars span:nth-child(2){top:6px}
+    .hamburger .bars span:nth-child(3){top:12px}
+
+    .mobile-panel{
+      display:none;
+      margin-top:10px;
+      border:1px solid rgba(10,27,61,.10);
+      background: rgba(255,255,255,.75);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow-md);
+      border-radius: 16px;
+      overflow:hidden;
+    }
+    .mobile-panel a{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 14px;
+      font-weight:900;
+      color:rgba(10,27,61,.84);
+      border-top:1px solid rgba(10,27,61,.08);
+    }
+    .mobile-panel a:first-child{border-top:0}
+    .mobile-panel .mcta{display:flex; gap:10px; padding:12px 12px; border-top:1px solid rgba(10,27,61,.08)}
+    .mobile-panel.open{display:block}
+
+    /* Hero */
+    .hero{
+      padding:44px 0 22px;
+      position:relative;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:28px;
+      align-items:center;
+    }
+    h1{
+      margin:14px 0 10px;
+      font-size: clamp(34px, 4vw, 54px);
+      line-height: 1.03;
+      letter-spacing:-1.2px;
+    }
+    .lead{
+      color:rgba(10,27,61,.78);
+      font-size: clamp(16px, 1.3vw, 18px);
+      line-height:1.6;
+      margin: 0 0 18px;
+      max-width: 62ch;
+    }
+    .sublead{
+      color:rgba(10,27,61,.72);
+      font-size:14px;
+      margin:14px 0 0;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .trustrow{
+      display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+      margin-top:18px;
+      color:rgba(10,27,61,.72);
+      font-weight:800;
+      font-size:13px;
+    }
+    .trustrow .chip{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 12px;
+      background: rgba(255,255,255,.65);
+      border:1px solid rgba(10,27,61,.10);
+      border-radius:999px;
+      box-shadow: 0 10px 22px rgba(3,22,59,.08);
+    }
+    .trustrow .chip i{
+      width:22px; height:22px; border-radius:10px;
+      display:grid; place-items:center;
+      background: rgba(11,95,255,.10);
+      border:1px solid rgba(11,95,255,.18);
+    }
+
+    .cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
+    .cta-row .btn{min-height:46px}
+
+    /* Preview card */
+    .preview{
+      position:relative;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.58));
+      border:1px solid rgba(10,27,61,.10);
+      box-shadow: var(--shadow-lg);
+      overflow:hidden;
+    }
+    .preview:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(800px 500px at 25% 15%, rgba(11,95,255,.20), rgba(11,95,255,0) 60%),
+        radial-gradient(700px 500px at 80% 30%, rgba(46,140,255,.18), rgba(46,140,255,0) 55%),
+        radial-gradient(800px 700px at 60% 95%, rgba(108,182,255,.18), rgba(108,182,255,0) 55%);
+      pointer-events:none;
+      opacity:.9;
+    }
+    .preview-inner{position:relative; padding:16px}
+    .windowbar{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 10px 12px;
+      border-bottom:1px solid rgba(10,27,61,.08);
+    }
+    .dots{display:flex; gap:7px}
+    .dots span{width:10px;height:10px;border-radius:999px;background:rgba(10,27,61,.16)}
+    .dots span:nth-child(1){background:rgba(255,59,48,.55)}
+    .dots span:nth-child(2){background:rgba(255,204,0,.55)}
+    .dots span:nth-child(3){background:rgba(52,199,89,.55)}
+    .url{
+      font-size:12px;
+      font-weight:900;
+      color:rgba(10,27,61,.55);
+      background:rgba(255,255,255,.65);
+      border:1px solid rgba(10,27,61,.10);
+      padding:8px 10px;
+      border-radius:999px;
+      display:flex; align-items:center; gap:8px;
+      min-width: 52%;
+      justify-content:center;
+      box-shadow: 0 10px 20px rgba(3,22,59,.06);
+    }
+    .url b{color:rgba(10,27,61,.72)}
+    .frame{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+      padding:14px 10px 10px;
+    }
+    .mini-top{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .mini-title{
+      display:flex; align-items:center; gap:10px;
+      font-weight:1000;
+      letter-spacing:-.4px;
+    }
+    .mini-title .badge{
+      font-size:12px;
+      font-weight:1000;
+      padding:7px 10px;
+      border-radius:999px;
+      color:rgba(6,43,102,.92);
+      background: rgba(11,95,255,.10);
+      border:1px solid rgba(11,95,255,.16);
+    }
+
+    .mini-grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:12px;
+      align-items:stretch;
+    }
+    .panel{
+      border-radius: 18px;
+      background: rgba(255,255,255,.72);
+      border:1px solid rgba(10,27,61,.10);
+      box-shadow: 0 14px 30px rgba(3,22,59,.08);
+      overflow:hidden;
+    }
+    .panel h3{
+      margin:0;
+      font-size:14px;
+      letter-spacing:-.2px;
+    }
+    .panel .phead{
+      padding:12px 12px;
+      display:flex; align-items:center; justify-content:space-between;
+      border-bottom:1px solid rgba(10,27,61,.08);
+      color:rgba(10,27,61,.84);
+      font-weight:1000;
+    }
+    .panel .pbody{padding:12px}
+
+    .service{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+      padding:10px;
+      border-radius:14px;
+      border:1px solid rgba(10,27,61,.08);
+      background: rgba(255,255,255,.64);
+      margin-bottom:10px;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .service:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 14px 24px rgba(3,22,59,.10);
+      border-color: rgba(11,95,255,.20);
+    }
+    .svc-left{display:flex; gap:10px; min-width:0}
+    .svc-ico{
+      width:36px; height:36px; border-radius:14px;
+      background: linear-gradient(135deg, rgba(11,95,255,.14), rgba(108,182,255,.12));
+      border:1px solid rgba(11,95,255,.18);
+      display:grid; place-items:center;
+      flex:0 0 auto;
+    }
+    .svc-ico svg{width:18px;height:18px}
+    .svc-meta{min-width:0}
+    .svc-meta .name{font-weight:1000; font-size:13px; letter-spacing:-.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+    .svc-meta .desc{font-size:12px; color:rgba(10,27,61,.66); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+    .svc-price{
+      font-weight:1100;
+      color:rgba(6,43,102,.92);
+      background: rgba(11,95,255,.10);
+      border:1px solid rgba(11,95,255,.16);
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:12px;
+      flex: 0 0 auto;
+    }
+
+    .calendar{
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap:8px;
+    }
+    .day{
+      border-radius:14px;
+      border:1px solid rgba(10,27,61,.10);
+      background: rgba(255,255,255,.60);
+      padding:10px 8px;
+      min-height: 54px;
+      position:relative;
+      overflow:hidden;
+    }
+    .day .dnum{font-weight:1000; font-size:12px; color:rgba(10,27,61,.78)}
+    .day .dtag{
+      position:absolute; left:8px; bottom:8px;
+      font-size:11px; font-weight:1000;
+      padding:5px 8px;
+      border-radius:999px;
+      border:1px solid rgba(10,27,61,.10);
+      background: rgba(255,255,255,.7);
+      color:rgba(10,27,61,.70);
+    }
+    .day.available{
+      border-color: rgba(11,95,255,.20);
+      background: linear-gradient(180deg, rgba(11,95,255,.10), rgba(255,255,255,.58));
+    }
+    .day.available .dtag{
+      border-color: rgba(11,95,255,.22);
+      background: rgba(11,95,255,.10);
+      color: rgba(6,43,102,.92);
+    }
+    .day.booked{
+      background: linear-gradient(180deg, rgba(10,27,61,.06), rgba(255,255,255,.60));
+    }
+    .day.booked:after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(10,27,61,.10) 0px,
+        rgba(10,27,61,.10) 8px,
+        rgba(10,27,61,.00) 8px,
+        rgba(10,27,61,.00) 16px
+      );
+      opacity:.4;
+      transform: rotate(8deg);
+    }
+
+    .mini-actions{
+      display:flex; gap:10px; align-items:center; justify-content:flex-end;
+      margin-top:10px;
+    }
+
+    /* Sections */
+    .section{padding:44px 0}
+    .section h2{
+      margin:0 0 10px;
+      font-size: clamp(24px, 2.6vw, 36px);
+      letter-spacing:-.9px;
+      line-height:1.08;
+    }
+    .section p{margin:0; color:rgba(10,27,61,.74); line-height:1.65}
+    .kicker{
+      color:rgba(6,43,102,.92);
+      font-weight:1000;
+      letter-spacing:.12em;
+      font-size:12px;
+      text-transform:uppercase;
+      display:flex; align-items:center; gap:10px;
+      margin-bottom:10px;
+    }
+    .kicker:before{
+      content:"";
+      width:26px; height:10px; border-radius:999px;
+      background: linear-gradient(90deg, var(--blue0), var(--blue2));
+      box-shadow: 0 12px 24px rgba(11,95,255,.16);
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:16px;
+      margin-top:18px;
+    }
+    .card{
+      grid-column: span 4;
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,.72);
+      border:1px solid rgba(10,27,61,.10);
+      box-shadow: var(--shadow-sm);
+      padding:16px;
+      position:relative;
+      overflow:hidden;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+      min-height: 168px;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(11,95,255,.22);
+    }
+    .card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(560px 200px at 20% 0%, rgba(11,95,255,.18), rgba(11,95,255,0) 60%),
+        radial-gradient(560px 240px at 100% 20%, rgba(108,182,255,.14), rgba(108,182,255,0) 60%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .card > *{position:relative}
+    .card .top{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      margin-bottom:10px;
+    }
+    .card .ico{
+      width:44px; height:44px; border-radius:16px;
+      background: linear-gradient(135deg, rgba(11,95,255,.16), rgba(108,182,255,.14));
+      border:1px solid rgba(11,95,255,.18);
+      display:grid; place-items:center;
+      box-shadow: 0 14px 30px rgba(11,95,255,.12);
+    }
+    .card h3{margin:0; font-size:16px; letter-spacing:-.4px}
+    .card .meta{color:rgba(10,27,61,.70); font-size:13px; line-height:1.6}
+    .card .tag{
+      font-size:12px;
+      font-weight:1000;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(10,27,61,.10);
+      background: rgba(255,255,255,.70);
+      color:rgba(10,27,61,.68);
+      white-space:nowrap;
+    }
+
+    /* Story split */
+    .split{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:18px;
+      margin-top:18px;
+      align-items:stretch;
+    }
+    .big-card{
+      border-radius: var(--radius-xl);
+      background: linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.58));
+      border:1px solid rgba(10,27,61,.10);
+      box-shadow: var(--shadow-md);
+      overflow:hidden;
+      position:relative;
+    }
+    .big-card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(900px 500px at 12% 10%, rgba(11,95,255,.18), rgba(11,95,255,0) 60%),
+        radial-gradient(900px 500px at 92% 28%, rgba(46,140,255,.15), rgba(46,140,255,0) 58%),
+        radial-gradient(900px 500px at 60% 100%, rgba(108,182,255,.18), rgba(108,182,255,0) 55%);
+      pointer-events:none;
+      opacity:.9;
+    }
+    .big-card > *{position:relative}
+    .big-card .head{
+      padding:18px 18px 0;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    }
+    .big-card .head h3{
+      margin:0;
+      letter-spacing:-.6px;
+      font-size:18px;
+    }
+    .big-card .head p{margin:8px 0 0; font-size:13px; color:rgba(10,27,61,.72)}
+    .big-card .content{padding:16px 18px 18px}
+    .steps{display:grid; gap:10px; margin-top:12px}
+    .step{
+      display:flex; gap:12px; align-items:flex-start;
+      padding:12px;
+      border-radius:16px;
+      background: rgba(255,255,255,.66);
+      border:1px solid rgba(10,27,61,.10);
+      box-shadow: 0 12px 22px rgba(3,22,59,.06);
+    }
+    .step .num{
+      width:30px; height:30px; border-radius:12px;
+      display:grid; place-items:center;
+      background: rgba(11,95,255,.10);
+      border:1px solid rgba(11,95,255,.18);
+      font-weight:1000;
+      color:rgba(6,43,102,.92);
+      flex:0 0 auto;
+    }
+    .step .txt{min-width:0}
+    .step .txt b{display:block; font-weight:1000; letter-spacing:-.2px; margin-bottom:3px}
+    .step .txt span{color:rgba(10,27,61,.70); font-size:13px; line-height:1.55}
+
+    /* Pricing */
+    .pricing{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:16px;
+      margin-top:18px;
+      align-items:stretch;
+    }
+    .price{
+      grid-column: span 6;
+      border-radius: var(--radius-xl);
+      background: rgba(255,255,255,.75);
+      border:1px solid rgba(10,27,61,.10);
+      box-shadow: var(--shadow-md);
+      overflow:hidden;
+      position:relative;
+    }
+    .price.featured{
+      border-color: rgba(11,95,255,.26);
+      box-shadow: 0 22px 56px rgba(11,95,255,.22), 0 14px 34px rgba(3,22,59,.12);
+      transform: translateY(-2px);
+    }
+    .price .top{
+      padding:18px 18px 14px;
+      border-bottom:1px solid rgba(10,27,61,.08);
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+      background: linear-gradient(180deg, rgba(11,95,255,.10), rgba(255,255,255,0));
+    }
+    .price .top h3{margin:0; font-size:18px; letter-spacing:-.5px}
+    .price .top p{margin:6px 0 0; font-size:13px; color:rgba(10,27,61,.72)}
+    .price .flag{
+      font-size:12px; font-weight:1000;
+      padding:7px 10px;
+      border-radius:999px;
+      background: linear-gradient(135deg, rgba(11,95,255,.14), rgba(108,182,255,.14));
+      border:1px solid rgba(11,95,255,.18);
+      color:rgba(6,43,102,.92);
+      white-space:nowrap;
+    }
+    .price .body{padding:16px 18px 18px}
+    .amount{
+      display:flex; align-items:flex-end; gap:10px; flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .amount .val{
+      font-size:34px; font-weight:1100; letter-spacing:-1px;
+    }
+    .amount .per{color:rgba(10,27,61,.66); font-weight:900}
+    .ul{
+      list-style:none; padding:0; margin:0;
+      display:grid; gap:10px;
+    }
+    .ul li{
+      display:flex; gap:10px; align-items:flex-start;
+      color:rgba(10,27,61,.74);
+      font-weight:800;
+      font-size:13px;
+      line-height:1.5;
+    }
+    .check{
+      width:20px; height:20px; border-radius:8px;
+      display:grid; place-items:center;
+      background: rgba(11,95,255,.10);
+      border:1px solid rgba(11,95,255,.18);
+      flex:0 0 auto;
+      margin-top:1px;
+    }
+    .check svg{width:14px;height:14px}
+    .price .actions{display:flex; gap:10px; padding-top:14px; flex-wrap:wrap}
+
+    /* FAQ */
+    .faq{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:16px;
+      margin-top:18px;
+    }
+    details{
+      border-radius: 18px;
+      background: rgba(255,255,255,.74);
+      border:1px solid rgba(10,27,61,.10);
+      box-shadow: 0 12px 24px rgba(3,22,59,.08);
+      overflow:hidden;
+    }
+    summary{
+      list-style:none;
+      cursor:pointer;
+      padding:16px 16px;
+      font-weight:1000;
+      letter-spacing:-.3px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      outline:none;
+    }
+    summary::-webkit-details-marker{display:none}
+    .caret{
+      width:34px; height:34px; border-radius:14px;
+      display:grid; place-items:center;
+      background: rgba(11,95,255,.10);
+      border:1px solid rgba(11,95,255,.18);
+      transition: transform .18s ease;
+      flex:0 0 auto;
+    }
+    details[open] .caret{transform: rotate(180deg)}
+    details .ans{
+      padding:0 16px 16px;
+      color:rgba(10,27,61,.72);
+      line-height:1.65;
+      font-weight:800;
+      font-size:13px;
+    }
+
+    /* Footer */
+    .footer{
+      padding:34px 0 36px;
+      border-top:1px solid rgba(10,27,61,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,.55));
+      backdrop-filter: blur(10px);
+    }
+    .footer-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:16px;
+      align-items:start;
+    }
+    .fine{color:rgba(10,27,61,.62); font-weight:800; font-size:13px; line-height:1.6; margin-top:10px}
+    .footlinks{display:flex; gap:14px; flex-wrap:wrap; justify-content:flex-end}
+    .footlinks a{
+      color:rgba(10,27,61,.70);
+      font-weight:1000;
+      padding:10px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.60);
+      border:1px solid rgba(10,27,61,.10);
+      box-shadow: 0 10px 18px rgba(3,22,59,.06);
+    }
+    .footlinks a:hover{border-color: rgba(11,95,255,.20); color:rgba(6,43,102,.92)}
+
+    /* Toast + Modal */
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      z-index: 80;
+      padding: 12px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.82);
+      border:1px solid rgba(10,27,61,.12);
+      box-shadow: 0 18px 46px rgba(3,22,59,.16);
+      display:none;
+      align-items:center;
+      gap:10px;
+      color:rgba(10,27,61,.78);
+      font-weight:900;
+      max-width: calc(100vw - 22px);
+      backdrop-filter: blur(14px);
+    }
+    .toast.show{display:flex; animation: toastIn .22s ease both}
+    @keyframes toastIn{
+      from{opacity:0; transform: translateX(-50%) translateY(10px) scale(.98)}
+      to{opacity:1; transform: translateX(-50%) translateY(0) scale(1)}
+    }
+
+    .modal-backdrop{
+      position:fixed; inset:0;
+      background: rgba(3,22,59,.42);
+      backdrop-filter: blur(10px);
+      z-index: 90;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+    }
+    .modal-backdrop.open{display:flex; animation: fadeIn .18s ease both}
+    @keyframes fadeIn{from{opacity:0} to{opacity:1}}
+    .modal{
+      width:min(720px, 100%);
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.78));
+      border:1px solid rgba(255,255,255,.6);
+      box-shadow: 0 30px 90px rgba(3,22,59,.28);
+      overflow:hidden;
+      position:relative;
+    }
+    .modal:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(900px 500px at 10% 0%, rgba(11,95,255,.22), rgba(11,95,255,0) 58%),
+        radial-gradient(700px 500px at 95% 35%, rgba(108,182,255,.18), rgba(108,182,255,0) 58%);
+      pointer-events:none;
+      opacity:.9;
+    }
+    .modal > *{position:relative}
+    .modal-head{
+      padding:16px 16px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+      border-bottom:1px solid rgba(10,27,61,.08);
+      background: linear-gradient(180deg, rgba(11,95,255,.10), rgba(255,255,255,0));
+    }
+    .modal-head h3{margin:0; letter-spacing:-.6px; font-size:18px}
+    .modal-head p{margin:6px 0 0; color:rgba(10,27,61,.72); font-weight:800; font-size:13px; line-height:1.55}
+    .xbtn{
+      border:1px solid rgba(10,27,61,.12);
+      background: rgba(255,255,255,.75);
+      width:40px; height:40px;
+      border-radius:14px;
+      display:grid; place-items:center;
+      cursor:pointer;
+      box-shadow: 0 12px 22px rgba(3,22,59,.10);
+    }
+    .modal-body{padding:16px}
+    .form{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      align-items:start;
+    }
+    .field{display:flex; flex-direction:column; gap:8px}
+    .field.full{grid-column: 1 / -1}
+    label{
+      font-weight:1000;
+      font-size:12px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:rgba(10,27,61,.64);
+    }
+    input, textarea, select{
+      width:100%;
+      padding:12px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(10,27,61,.14);
+      background: rgba(255,255,255,.78);
+      outline:none;
+      box-shadow: 0 10px 18px rgba(3,22,59,.06);
+      transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+      color:rgba(10,27,61,.86);
+      font-weight:900;
+    }
+    textarea{min-height: 96px; resize: vertical; font-weight:800}
+    input:focus, textarea:focus, select:focus{
+      border-color: rgba(11,95,255,.34);
+      box-shadow: 0 18px 34px rgba(11,95,255,.14), 0 12px 18px rgba(3,22,59,.06);
+    }
+    .modal-actions{
+      display:flex; gap:10px; flex-wrap:wrap;
+      padding: 0 16px 16px;
+    }
+
+    /* Scroll reveal */
+    .reveal{opacity:0; transform: translateY(10px); transition: opacity .5s ease, transform .5s ease}
+    .reveal.in{opacity:1; transform: translateY(0)}
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns: 1fr; }
+      .preview{order:2}
+      .cards .card{grid-column: span 6}
+      .split{grid-template-columns: 1fr}
+      .pricing .price{grid-column: span 12}
+      .faq{grid-template-columns: 1fr}
+      .footer-grid{grid-template-columns: 1fr}
+      .footlinks{justify-content:flex-start}
+      .url{min-width: 58%}
+    }
+    @media (max-width: 760px){
+      .navlinks{display:none}
+      .hamburger{display:inline-flex}
+      .cards .card{grid-column: span 12}
+      .mini-grid{grid-template-columns: 1fr}
+      .url{display:none}
+      .form{grid-template-columns: 1fr}
+      .field.full{grid-column:auto}
+    }
+    @media (prefers-reduced-motion: reduce){
+      *{scroll-behavior:auto!important}
+      .logo:after{animation:none}
+      .reveal{transition:none}
+      .btn{transition:none}
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap">
+      <div class="nav-inner">
+        <a class="brand" href="#top" aria-label="EasyTask Home">
+          <span class="logo" aria-hidden="true"></span>
+          <span><b>Easy</b>Task</span>
+        </a>
+
+        <nav class="navlinks" aria-label="Primary">
+          <a href="#why">Why EasyTask</a>
+          <a href="#how">How it works</a>
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+
+        <div class="nav-cta">
+          <button class="btn btn-ghost btn-small" data-open-modal="demo">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-width="2"/></svg>
+            </span>
+            Book a demo
+          </button>
+          <button class="btn btn-primary btn-small" data-open-modal="start">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-4.35 7-11a7 7 0 1 0-14 0c0 6.65 7 11 7 11Z" stroke="white" stroke-width="2"/><path d="M9.5 10.5 11 12l3.5-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Get started
+          </button>
+
+          <button class="hamburger" id="hamburger" aria-label="Open menu" aria-controls="mobilePanel" aria-expanded="false">
+            <div class="bars" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div class="mobile-panel" id="mobilePanel" aria-label="Mobile menu">
+        <a href="#why">Why EasyTask <span aria-hidden="true">→</span></a>
+        <a href="#how">How it works <span aria-hidden="true">→</span></a>
+        <a href="#features">Features <span aria-hidden="true">→</span></a>
+        <a href="#pricing">Pricing <span aria-hidden="true">→</span></a>
+        <a href="#faq">FAQ <span aria-hidden="true">→</span></a>
+        <div class="mcta">
+          <button class="btn btn-ghost btn-small" style="flex:1" data-open-modal="demo">Book a demo</button>
+          <button class="btn btn-primary btn-small" style="flex:1" data-open-modal="start">Get started</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div>
+            <span class="pill reveal">
+              <span class="dot" aria-hidden="true"></span>
+              The booking operating system for event businesses
+            </span>
+
+            <h1 class="reveal" style="transition-delay:.06s">
+              Everything your event business needs to take bookings — in one place.
+            </h1>
+
+            <p class="lead reveal" style="transition-delay:.12s">
+              EasyTask helps decorators, caterers, and party planners turn interest into confirmed bookings without chaos, confusion, or constant follow-ups.
+            </p>
+
+            <div class="cta-row reveal" style="transition-delay:.16s">
+              <button class="btn btn-primary" data-open-modal="start">
+                <span class="icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M4 12h16" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M14 6l6 6-6 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                Launch your booking page
+              </button>
+              <a class="btn btn-ghost" href="#how">
+                <span class="icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" stroke="currentColor" stroke-width="2"/><path d="M10 8l6 4-6 4V8Z" fill="currentColor"/></svg>
+                </span>
+                See how it works
+              </a>
+            </div>
+
+            <div class="trustrow reveal" style="transition-delay:.20s" aria-label="Trust highlights">
+              <span class="chip">
+                <i aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 1.5 20 6v7.5c0 5-3.4 8.7-8 9.9-4.6-1.2-8-4.9-8-9.9V6l8-4.5Z" stroke="rgba(6,43,102,.92)" stroke-width="2"/><path d="M8.8 12.1 11 14.3l4.6-5" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </i>
+                Availability-safe booking
+              </span>
+              <span class="chip">
+                <i aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 7h10v10H7V7Z" stroke="rgba(6,43,102,.92)" stroke-width="2"/><path d="M4 4h5M15 4h5M4 20h5M15 20h5" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round"/></svg>
+                </i>
+                One dashboard, zero chaos
+              </span>
+              <span class="chip">
+                <i aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-4.35 7-11a7 7 0 1 0-14 0c0 6.65 7 11 7 11Z" stroke="rgba(6,43,102,.92)" stroke-width="2"/><path d="M9.5 10.5 11 12l3.5-4" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </i>
+                Professional storefront
+              </span>
+            </div>
+
+            <p class="sublead reveal" style="transition-delay:.24s">
+              <span style="display:inline-flex;align-items:center;gap:8px;font-weight:1000;color:rgba(6,43,102,.92)">
+                <span class="dot" style="width:8px;height:8px; box-shadow:0 0 0 5px rgba(11,95,255,.10)"></span>
+                Customers book only when you’re available.
+              </span>
+              <span style="opacity:.6">•</span>
+              <span style="font-weight:900">Services stay up to date.</span>
+              <span style="opacity:.6">•</span>
+              <span style="font-weight:900">Less back-and-forth.</span>
+            </p>
+          </div>
+
+          <aside class="preview reveal" style="transition-delay:.10s" aria-label="Product preview">
+            <div class="preview-inner">
+              <div class="windowbar">
+                <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+                <div class="url" aria-hidden="true">
+                  <span style="opacity:.55">easytask</span><b>.app</b><span style="opacity:.55">/your-brand</span>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center">
+                  <span class="pill" style="padding:8px 10px; font-size:12px; font-weight:1000">
+                    <span class="dot" style="width:8px;height:8px"></span>
+                    Live preview
+                  </span>
+                </div>
+              </div>
+
+              <div class="frame">
+                <div class="mini-top">
+                  <div class="mini-title">
+                    <span style="display:inline-flex;align-items:center;gap:10px">
+                      <span class="logo" style="width:28px;height:28px;border-radius:10px"></span>
+                      <span>BlueSky Events</span>
+                    </span>
+                    <span class="badge">Instant booking</span>
+                  </div>
+                  <button class="btn btn-primary btn-small" id="mockBookBtn">Book</button>
+                </div>
+
+                <div class="mini-grid">
+                  <div class="panel">
+                    <div class="phead">
+                      <h3>Services</h3>
+                      <span style="font-size:12px;color:rgba(10,27,61,.62);font-weight:1000">Always current</span>
+                    </div>
+                    <div class="pbody">
+                      <div class="service">
+                        <div class="svc-left">
+                          <div class="svc-ico" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none"><path d="M7 10h10M9 6h6M6 21h12l-1-11H7L6 21Z" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                          </div>
+                          <div class="svc-meta">
+                            <div class="name">Decor Package</div>
+                            <div class="desc">Backdrop, balloons, table styling</div>
+                          </div>
+                        </div>
+                        <div class="svc-price">$450+</div>
+                      </div>
+
+                      <div class="service">
+                        <div class="svc-left">
+                          <div class="svc-ico" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2M7 7l1 14h8l1-14" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round"/></svg>
+                          </div>
+                          <div class="svc-meta">
+                            <div class="name">Catering Add‑on</div>
+                            <div class="desc">Buffet + staff, per guest</div>
+                          </div>
+                        </div>
+                        <div class="svc-price">$25</div>
+                      </div>
+
+                      <div class="service" style="margin-bottom:0">
+                        <div class="svc-left">
+                          <div class="svc-ico" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-4.35 7-11a7 7 0 1 0-14 0c0 6.65 7 11 7 11Z" stroke="rgba(6,43,102,.92)" stroke-width="2"/><path d="M9.5 10.5 11 12l3.5-4" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                          </div>
+                          <div class="svc-meta">
+                            <div class="name">Planning Session</div>
+                            <div class="desc">Consult + timeline + checklist</div>
+                          </div>
+                        </div>
+                        <div class="svc-price">$99</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panel">
+                    <div class="phead">
+                      <h3>Availability</h3>
+                      <span style="font-size:12px;color:rgba(10,27,61,.62);font-weight:1000">No double bookings</span>
+                    </div>
+                    <div class="pbody">
+                      <div class="calendar" aria-label="Calendar preview">
+                        <div class="day available"><div class="dnum">3</div><div class="dtag">Open</div></div>
+                        <div class="day"><div class="dnum">4</div><div class="dtag">Limited</div></div>
+                        <div class="day booked"><div class="dnum">5</div><div class="dtag">Booked</div></div>
+                        <div class="day available"><div class="dnum">6</div><div class="dtag">Open</div></div>
+                        <div class="day"><div class="dnum">7</div><div class="dtag">Limited</div></div>
+                        <div class="day booked"><div class="dnum">8</div><div class="dtag">Booked</div></div>
+                        <div class="day available"><div class="dnum">9</div><div class="dtag">Open</div></div>
+
+                        <div class="day"><div class="dnum">10</div><div class="dtag">Limited</div></div>
+                        <div class="day available"><div class="dnum">11</div><div class="dtag">Open</div></div>
+                        <div class="day"><div class="dnum">12</div><div class="dtag">Limited</div></div>
+                        <div class="day booked"><div class="dnum">13</div><div class="dtag">Booked</div></div>
+                        <div class="day available"><div class="dnum">14</div><div class="dtag">Open</div></div>
+                        <div class="day"><div class="dnum">15</div><div class="dtag">Limited</div></div>
+                        <div class="day available"><div class="dnum">16</div><div class="dtag">Open</div></div>
+                      </div>
+
+                      <div class="mini-actions">
+                        <button class="btn btn-ghost btn-small" id="mockToggleBtn">Toggle slots</button>
+                        <button class="btn btn-primary btn-small" data-open-modal="demo">Share link</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="panel" style="border-radius:18px">
+                  <div class="phead">
+                    <h3>Inquiry → Booking</h3>
+                    <span style="font-size:12px;color:rgba(10,27,61,.62);font-weight:1000">Predictable flow</span>
+                  </div>
+                  <div class="pbody" style="display:grid; gap:10px">
+                    <div style="display:flex; gap:10px; flex-wrap:wrap">
+                      <span class="pill" style="box-shadow:none; border-color: rgba(10,27,61,.10); background: rgba(255,255,255,.70); font-weight:1000; font-size:12px"><span class="dot" style="width:8px;height:8px;background:linear-gradient(135deg, #0ea5e9, #0B5FFF)"></span>New inquiry</span>
+                      <span class="pill" style="box-shadow:none; border-color: rgba(10,27,61,.10); background: rgba(255,255,255,.70); font-weight:1000; font-size:12px"><span class="dot" style="width:8px;height:8px;background:linear-gradient(135deg, #2E8CFF, #0B5FFF)"></span>Auto-confirm rules</span>
+                      <span class="pill" style="box-shadow:none; border-color: rgba(10,27,61,.10); background: rgba(255,255,255,.70); font-weight:1000; font-size:12px"><span class="dot" style="width:8px;height:8px;background:linear-gradient(135deg, #0B5FFF, #6CB6FF)"></span>Confirmed booking</span>
+                    </div>
+                    <div style="color:rgba(10,27,61,.72); font-weight:800; font-size:13px; line-height:1.6">
+                      Customers browse services, pick a date you’ve approved, and submit details. You get a clean booking record—no screenshot trails, no “are you free?” ping-pong.
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="why" class="section">
+      <div class="wrap">
+        <div class="kicker reveal">Why EasyTask</div>
+        <h2 class="reveal" style="transition-delay:.06s">Stop losing bookings to scattered operations.</h2>
+        <p class="reveal" style="transition-delay:.10s; max-width: 78ch">
+          Most event businesses don’t lose sales because demand is low. They lose it because inquiries live in WhatsApp, availability lives in someone’s head, pricing lives in PDFs, and bookings are handled manually. EasyTask brings it into one clean, professional system that builds trust and closes faster.
+        </p>
+
+        <div class="cards">
+          <div class="card reveal" style="transition-delay:.06s">
+            <div class="top">
+              <div class="ico" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h10M4 17h16" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round"/></svg>
+              </div>
+              <span class="tag">Less back‑and‑forth</span>
+            </div>
+            <h3>Answer questions once, automatically.</h3>
+            <div class="meta">Customers see services, pricing, and what’s included—before they message you.</div>
+          </div>
+
+          <div class="card reveal" style="transition-delay:.10s">
+            <div class="top">
+              <div class="ico" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 3v4M17 3v4M4 9h16M6 21h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Z" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round"/><path d="M8 13h4M8 17h8" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round"/></svg>
+              </div>
+              <span class="tag">No double bookings</span>
+            </div>
+            <h3>Availability‑safe booking.</h3>
+            <div class="meta">People can only request dates you’ve made available—no more awkward “sorry we’re booked” messages.</div>
+          </div>
+
+          <div class="card reveal" style="transition-delay:.14s">
+            <div class="top">
+              <div class="ico" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" stroke="rgba(6,43,102,.92)" stroke-width="2"/><path d="M7 12h10" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round"/><path d="M12 7v10" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round"/></svg>
+              </div>
+              <span class="tag">One system</span>
+            </div>
+            <h3>Storefront + dashboard.</h3>
+            <div class="meta">Your public booking page looks premium. Your admin stays simple—no code, no tool juggling.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" class="section">
+      <div class="wrap">
+        <div class="kicker reveal">How it works</div>
+        <h2 class="reveal" style="transition-delay:.06s">A predictable flow from interest to confirmed booking.</h2>
+        <p class="reveal" style="transition-delay:.10s; max-width: 78ch">
+          EasyTask replaces scattered DMs and manual coordination with a professional booking experience your customers trust.
+        </p>
+
+        <div class="split">
+          <div class="big-card reveal" style="transition-delay:.06s">
+            <div class="head">
+              <div>
+                <h3>Your customer experience</h3>
+                <p>Clear services, clear dates, clear next steps.</p>
+              </div>
+              <span class="pill" style="box-shadow:none; background:rgba(255,255,255,.70); border-color:rgba(11,95,255,.16); font-weight:1000; font-size:12px">
+                <span class="dot" style="width:8px;height:8px"></span>
+                Trust‑first
+              </span>
+            </div>
+            <div class="content">
+              <div class="steps">
+                <div class="step">
+                  <div class="num">1</div>
+                  <div class="txt">
+                    <b>Explore your services</b>
+                    <span>Packages, add‑ons, and inclusions presented professionally—no PDFs, no guesswork.</span>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="num">2</div>
+                  <div class="txt">
+                    <b>Choose an available date</b>
+                    <span>Only the dates you approve are bookable, reducing delays and eliminating conflicts.</span>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="num">3</div>
+                  <div class="txt">
+                    <b>Submit details and get confirmation</b>
+                    <span>Structured booking info arrives complete, so you can act fast and close confidently.</span>
+                  </div>
+                </div>
+              </div>
+              <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap">
+                <button class="btn btn-primary" data-open-modal="demo">Book a demo</button>
+                <button class="btn btn-ghost" data-open-modal="start">Start setting up</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="big-card reveal" style="transition-delay:.10s">
+            <div class="head">
+              <div>
+                <h3>Your operations (behind the scenes)</h3>
+                <p>One dashboard to control your business online.</p>
+              </div>
+              <span class="pill" style="box-shadow:none; background:rgba(255,255,255,.70); border-color:rgba(10,27,61,.10); font-weight:1000; font-size:12px">
+                <span class="dot" style="width:8px;height:8px;background:linear-gradient(135deg, #0ea5e9, #0B5FFF)"></span>
+                Organized
+              </span>
+            </div>
+            <div class="content">
+              <div class="steps">
+                <div class="step">
+                  <div class="num">A</div>
+                  <div class="txt">
+                    <b>Update services in minutes</b>
+                    <span>Edit names, pricing, inclusions—your storefront stays accurate without redesigns.</span>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="num">B</div>
+                  <div class="txt">
+                    <b>Set availability with confidence</b>
+                    <span>Open/close days, limit slots, and keep your team aligned with a single source of truth.</span>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="num">C</div>
+                  <div class="txt">
+                    <b>Track bookings cleanly</b>
+                    <span>Every request becomes a structured record—no missed messages, no messy threads.</span>
+                  </div>
+                </div>
+              </div>
+              <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap">
+                <button class="btn btn-ghost" id="copyLinkBtn">
+                  <span class="icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 0 1 0-7l1-1a5 5 0 1 1 7 7l-1 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 11a5 5 0 0 1 0 7l-1 1a5 5 0 1 1-7-7l1-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  </span>
+                  Copy storefront link
+                </button>
+                <a class="btn btn-primary" href="#pricing">View plans</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <div class="wrap">
+        <div class="kicker reveal">Features</div>
+        <h2 class="reveal" style="transition-delay:.06s">Built for trust, clarity, and speed.</h2>
+        <p class="reveal" style="transition-delay:.10s; max-width: 78ch">
+          EasyTask is designed to feel like a premium website to your customers—and a simple control center for you.
+        </p>
+
+        <div class="cards">
+          <div class="card reveal" style="transition-delay:.06s">
+            <div class="top">
+              <div class="ico" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 12h18M12 3v18" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round"/><path d="M7 7h10v10H7V7Z" stroke="rgba(6,43,102,.92)" stroke-width="2"/></svg>
+              </div>
+              <span class="tag">Professional storefront</span>
+            </div>
+            <h3>Clean service pages that convert.</h3>
+            <div class="meta">Present packages with clarity and confidence so customers trust you before they even reach out.</div>
+          </div>
+
+          <div class="card reveal" style="transition-delay:.10s">
+            <div class="top">
+              <div class="ico" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round"/><path d="M7 7h6M17 17h-6" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round"/></svg>
+              </div>
+              <span class="tag">Fewer follow‑ups</span>
+            </div>
+            <h3>Replace ping‑pong with a flow.</h3>
+            <div class="meta">Structured booking requests reduce repetitive questions and speed up confirmations.</div>
+          </div>
+
+          <div class="card reveal" style="transition-delay:.14s">
+            <div class="top">
+              <div class="ico" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-4.35 7-11a7 7 0 1 0-14 0c0 6.65 7 11 7 11Z" stroke="rgba(6,43,102,.92)" stroke-width="2"/><path d="M9.5 10.5 11 12l3.5-4" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="tag">Commitment-safe</span>
+            </div>
+            <h3>Control availability without spreadsheets.</h3>
+            <div class="meta">Your booking page reflects real capacity—so you stay reliable, every time.</div>
+          </div>
+
+          <div class="card reveal" style="transition-delay:.06s">
+            <div class="top">
+              <div class="ico" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20 21V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v14" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round"/><path d="M8 9h8M8 13h8M8 17h6" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round"/></svg>
+              </div>
+              <span class="tag">One dashboard</span>
+            </div>
+            <h3>Manage content and services easily.</h3>
+            <div class="meta">Edit once, publish instantly. Your storefront stays accurate as your business evolves.</div>
+          </div>
+
+          <div class="card reveal" style="transition-delay:.10s">
+            <div class="top">
+              <div class="ico" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 18V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z" stroke="rgba(6,43,102,.92)" stroke-width="2"/><path d="M7 14l2-2 2 2 5-5 2 2" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="tag">Conversion-ready</span>
+            </div>
+            <h3>Designed to turn interest into action.</h3>
+            <div class="meta">Clear CTAs, structured info, and premium presentation help you close without pressure.</div>
+          </div>
+
+          <div class="card reveal" style="transition-delay:.14s">
+            <div class="top">
+              <div class="ico" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 1.5 20 6v7.5c0 5-3.4 8.7-8 9.9-4.6-1.2-8-4.9-8-9.9V6l8-4.5Z" stroke="rgba(6,43,102,.92)" stroke-width="2"/><path d="M8.8 12.1 11 14.3l4.6-5" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="tag">Trust built-in</span>
+            </div>
+            <h3>A booking experience that feels legitimate.</h3>
+            <div class="meta">From layout to messaging, everything signals professionalism and reliability.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" class="section">
+      <div class="wrap">
+        <div class="kicker reveal">Pricing</div>
+        <h2 class="reveal" style="transition-delay:.06s">Simple plans. Serious professionalism.</h2>
+        <p class="reveal" style="transition-delay:.10s; max-width: 78ch">
+          Choose a plan that matches your event volume. Upgrade as your bookings grow.
+        </p>
+
+        <div class="pricing">
+          <div class="price reveal" style="transition-delay:.06s">
+            <div class="top">
+              <div>
+                <h3>Starter</h3>
+                <p>For solo operators getting organized fast.</p>
+              </div>
+              <span class="flag">Quick setup</span>
+            </div>
+            <div class="body">
+              <div class="amount">
+                <div class="val">$19</div>
+                <div class="per">/month</div>
+              </div>
+              <ul class="ul">
+                <li><span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Professional booking storefront</li>
+                <li><span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Services & pricing management</li>
+                <li><span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Availability control</li>
+                <li><span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Booking request inbox</li>
+              </ul>
+              <div class="actions">
+                <button class="btn btn-primary" data-open-modal="start" style="flex:1">Start with Starter</button>
+                <button class="btn btn-ghost" data-open-modal="demo" style="flex:1">Talk to us</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="price featured reveal" style="transition-delay:.10s">
+            <div class="top">
+              <div>
+                <h3>Pro</h3>
+                <p>For busy teams that need consistency and speed.</p>
+              </div>
+              <span class="flag">Most popular</span>
+            </div>
+            <div class="body">
+              <div class="amount">
+                <div class="val">$49</div>
+                <div class="per">/month</div>
+              </div>
+              <ul class="ul">
+                <li><span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Everything in Starter</li>
+                <li><span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Multiple service categories & add‑ons</li>
+                <li><span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Slot limits and capacity controls</li>
+                <li><span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Priority support</li>
+              </ul>
+              <div class="actions">
+                <button class="btn btn-primary" data-open-modal="start" style="flex:1">Start with Pro</button>
+                <button class="btn btn-ghost" id="estimateBtn" style="flex:1">Estimate ROI</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="big-card reveal" style="margin-top:16px; transition-delay:.12s">
+          <div class="head">
+            <div>
+              <h3>What this means for your business</h3>
+              <p>More time delivering events, less time managing chaos.</p>
+            </div>
+            <span class="pill" style="box-shadow:none; background:rgba(255,255,255,.70); border-color:rgba(10,27,61,.10); font-weight:1000; font-size:12px">
+              <span class="dot" style="width:8px;height:8px;background:linear-gradient(135deg, #0B5FFF, #2E8CFF)"></span>
+              Outcomes
+            </span>
+          </div>
+          <div class="content">
+            <div class="cards" style="margin-top:0">
+              <div class="card" style="grid-column: span 3; min-height: 142px">
+                <div class="top">
+                  <div class="ico" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 7v5l3 2" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="rgba(6,43,102,.92)" stroke-width="2"/></svg>
+                  </div>
+                  <span class="tag">Faster replies</span>
+                </div>
+                <h3>Less follow‑ups</h3>
+                <div class="meta">Fewer “what’s included?” and “are you free?” loops.</div>
+              </div>
+
+              <div class="card" style="grid-column: span 3; min-height: 142px">
+                <div class="top">
+                  <div class="ico" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round"/><path d="M7 7h6M17 17h-6" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round"/></svg>
+                  </div>
+                  <span class="tag">No conflicts</span>
+                </div>
+                <h3>No double bookings</h3>
+                <div class="meta">Availability rules reduce mistakes and stress.</div>
+              </div>
+
+              <div class="card" style="grid-column: span 3; min-height: 142px">
+                <div class="top">
+                  <div class="ico" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 18V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z" stroke="rgba(6,43,102,.92)" stroke-width="2"/><path d="M7 14l2-2 2 2 5-5 2 2" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="tag">More closes</span>
+                </div>
+                <h3>Higher trust</h3>
+                <div class="meta">A premium booking flow signals reliability.</div>
+              </div>
+
+              <div class="card" style="grid-column: span 3; min-height: 142px">
+                <div class="top">
+                  <div class="ico" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20 21V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v14" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round"/><path d="M8 9h8M8 13h8M8 17h6" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round"/></svg>
+                  </div>
+                  <span class="tag">Clarity</span>
+                </div>
+                <h3>Full control</h3>
+                <div class="meta">Update services and availability anytime.</div>
+              </div>
+            </div>
+
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap">
+              <button class="btn btn-primary" data-open-modal="start">Get started</button>
+              <button class="btn btn-ghost" data-open-modal="demo">Book a demo</button>
+              <span style="color:rgba(10,27,61,.62); font-weight:900; font-size:13px; display:inline-flex; align-items:center; gap:10px; flex-wrap:wrap">
+                <span style="display:inline-flex; align-items:center; gap:8px">
+                  <span class="dot" style="width:8px;height:8px;background:linear-gradient(135deg, #0B5FFF, #6CB6FF); box-shadow:0 0 0 5px rgba(11,95,255,.10)"></span>
+                  EasyTask is not another tool.
+                </span>
+                <span style="opacity:.55">•</span>
+                <span>It’s the operating system for modern event businesses.</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="faq" class="section">
+      <div class="wrap">
+        <div class="kicker reveal">FAQ</div>
+        <h2 class="reveal" style="transition-delay:.06s">Questions, answered clearly.</h2>
+        <p class="reveal" style="transition-delay:.10s; max-width: 78ch">
+          Designed for event businesses that want professionalism without extra complexity.
+        </p>
+
+        <div class="faq">
+          <details class="reveal" style="transition-delay:.06s">
+            <summary>
+              Will this reduce my WhatsApp messages?
+              <span class="caret" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="ans">
+              Yes. Your storefront answers the common questions upfront (services, pricing, inclusions, availability), so conversations start closer to “confirmed.”
+            </div>
+          </details>
+
+          <details class="reveal" style="transition-delay:.10s">
+            <summary>
+              Can customers book only when I’m available?
+              <span class="caret" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="ans">
+              Exactly. You control open dates and capacity rules, so the system prevents conflicting requests.
+            </div>
+          </details>
+
+          <details class="reveal" style="transition-delay:.14s">
+            <summary>
+              Do I need a developer to update my services?
+              <span class="caret" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="ans">
+              No. EasyTask is built so you can update services, pricing, and availability from one dashboard—no code required.
+            </div>
+          </details>
+
+          <details class="reveal" style="transition-delay:.18s">
+            <summary>
+              Is this just a website builder?
+              <span class="caret" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="ans">
+              No. It’s a booking system designed specifically to run event business operations online—storefront + availability + booking workflow.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="wrap">
+        <div class="big-card reveal">
+          <div class="head">
+            <div>
+              <h3>Ready to replace chaos with clarity?</h3>
+              <p>Launch a professional booking experience your customers trust.</p>
+            </div>
+            <span class="pill" style="box-shadow:none; background:rgba(255,255,255,.70); border-color:rgba(11,95,255,.16); font-weight:1000; font-size:12px">
+              <span class="dot" style="width:8px;height:8px"></span>
+              Start today
+            </span>
+          </div>
+          <div class="content" style="display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap">
+            <div style="max-width: 72ch; color:rgba(10,27,61,.74); font-weight:800; line-height:1.65">
+              EasyTask gives you a single system to manage services, availability, and bookings—so you can spend your time delivering events, not managing follow-ups.
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap">
+              <button class="btn btn-primary" data-open-modal="start">Get started</button>
+              <button class="btn btn-ghost" data-open-modal="demo">Book a demo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="brand" style="gap:10px">
+            <span class="logo" aria-hidden="true"></span>
+            <span><b>Easy</b>Task</span>
+          </div>
+          <div class="fine">
+            A professional blue‑and‑white booking experience designed to enforce trust, commitment, and operational clarity for modern event businesses.
+          </div>
+          <div class="fine" style="opacity:.9">
+            © <span id="year"></span> EasyTask. All rights reserved.
+          </div>
+        </div>
+        <div class="footlinks" aria-label="Footer links">
+          <a href="#why">Why</a>
+          <a href="#how">How</a>
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <span class="dot" style="width:10px;height:10px"></span>
+    <span id="toastText">Done.</span>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal" tabindex="-1">
+      <div class="modal-head">
+        <div>
+          <h3 id="modalTitle">Get started</h3>
+          <p id="modalDesc">Tell us a bit about your business. We’ll reach out to help you launch a professional booking page.</p>
+        </div>
+        <button class="xbtn" id="modalClose" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="rgba(6,43,102,.92)" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form class="form" id="leadForm">
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" name="name" autocomplete="name" placeholder="Your name" required />
+          </div>
+          <div class="field">
+            <label for="business">Business</label>
+            <input id="business" name="business" placeholder="e.g., BlueSky Events" required />
+          </div>
+          <div class="field">
+            <label for="phone">Phone / WhatsApp</label>
+            <input id="phone" name="phone" inputmode="tel" placeholder="+1 (555) 000-0000" required />
+          </div>
+          <div class="field">
+            <label for="type">You are a…</label>
+            <select id="type" name="type" required>
+              <option value="" selected disabled>Select one</option>
+              <option>Decorator</option>
+              <option>Caterer</option>
+              <option>Party Planner</option>
+              <option>Venue</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label for="note">What do you want to sell/book?</label>
+            <textarea id="note" name="note" placeholder="Packages, add-ons, capacity, typical lead time…"></textarea>
+          </div>
+          <div class="field full" style="display:flex; flex-direction:row; align-items:center; gap:10px; margin-top:4px">
+            <input id="consent" type="checkbox" required style="width:18px;height:18px; box-shadow:none" />
+            <label for="consent" style="margin:0; text-transform:none; letter-spacing:0; font-size:13px; color:rgba(10,27,61,.70); font-weight:900">
+              I agree to be contacted about setting up EasyTask.
+            </label>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="prefillBtn" type="button" style="flex:1">Use sample data</button>
+        <button class="btn btn-primary" id="submitBtn" type="submit" form="leadForm" style="flex:1">
+          Submit
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 12h16" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M14 6l6 6-6 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Smooth scroll (basic)
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const id = a.getAttribute('href');
+        if(!id || id === '#') return;
+        const el = document.querySelector(id);
+        if(!el) return;
+        e.preventDefault();
+        el.scrollIntoView({behavior:'smooth', block:'start'});
+        // close mobile panel if open
+        closeMobile();
+      });
+    });
+
+    // Mobile menu
+    const hamburger = document.getElementById('hamburger');
+    const mobilePanel = document.getElementById('mobilePanel');
+    function closeMobile(){
+      if(!mobilePanel) return;
+      mobilePanel.classList.remove('open');
+      hamburger?.setAttribute('aria-expanded','false');
+    }
+    hamburger?.addEventListener('click', ()=>{
+      const open = mobilePanel.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', String(open));
+    });
+    window.addEventListener('resize', ()=>{ if(window.innerWidth > 760) closeMobile(); });
+
+    // Toast
+    const toast = document.getElementById('toast');
+    const toastText = document.getElementById('toastText');
+    let toastTimer = null;
+    function showToast(msg){
+      toastText.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(()=>toast.classList.remove('show'), 2400);
+    }
+
+    // Modal
+    const backdrop = document.getElementById('modalBackdrop');
+    const modalClose = document.getElementById('modalClose');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const leadForm = document.getElementById('leadForm');
+    const prefillBtn = document.getElementById('prefillBtn');
+
+    let lastFocus = null;
+
+    function openModal(mode){
+      lastFocus = document.activeElement;
+      backdrop.classList.add('open');
+      document.body.style.overflow = 'hidden';
+
+      if(mode === 'demo'){
+        modalTitle.textContent = 'Book a demo';
+        modalDesc.textContent = 'Pick a time that works. We’ll show you how EasyTask turns inquiries into confirmed bookings—without chaos.';
+      }else{
+        modalTitle.textContent = 'Get started';
+        modalDesc.textContent = 'Tell us a bit about your business. We’ll reach out to help you launch a professional booking page.';
+      }
+
+      // focus first input
+      setTimeout(()=>document.getElementById('name')?.focus(), 20);
+    }
+
+    function closeModal(){
+      backdrop.classList.remove('open');
+      document.body.style.overflow = '';
+      if(lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    document.querySelectorAll('[data-open-modal]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        openModal(btn.getAttribute('data-open-modal'));
+      });
+    });
+
+    modalClose?.addEventListener('click', closeModal);
+    backdrop?.addEventListener('click', (e)=>{ if(e.target === backdrop) closeModal(); });
+    window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && backdrop.classList.contains('open')) closeModal(); });
+
+    prefillBtn?.addEventListener('click', ()=>{
+      document.getElementById('name').value = 'Amina Khan';
+      document.getElementById('business').value = 'BlueSky Events';
+      document.getElementById('phone').value = '+1 (555) 014-2000';
+      document.getElementById('type').value = 'Party Planner';
+      document.getElementById('note').value = 'Birthday decor packages + catering add-ons. Need availability-based booking so we stop double-booking weekends.';
+      document.getElementById('consent').checked = true;
+      showToast('Sample details added.');
+    });
+
+    leadForm?.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(leadForm).entries());
+      // Production note: send to backend here.
+      closeModal();
+      showToast(`Thanks, ${data.name || 'there'} — we’ll reach out shortly.`);
+      leadForm.reset();
+    });
+
+    // Mock interactions in preview
+    const mockBookBtn = document.getElementById('mockBookBtn');
+    mockBookBtn?.addEventListener('click', ()=>{
+      showToast('Booking request drafted (preview).');
+      openModal('start');
+    });
+
+    const mockToggleBtn = document.getElementById('mockToggleBtn');
+    mockToggleBtn?.addEventListener('click', ()=>{
+      const days = Array.from(document.querySelectorAll('.calendar .day'));
+      days.forEach((d, idx)=>{
+        if(idx % 5 === 0) d.classList.toggle('available');
+        if(idx % 7 === 0) d.classList.toggle('booked');
+      });
+      showToast('Availability updated (preview).');
+    });
+
+    const copyLinkBtn = document.getElementById('copyLinkBtn');
+    copyLinkBtn?.addEventListener('click', async ()=>{
+      const link = 'https://easytask.app/your-brand';
+      try{
+        await navigator.clipboard.writeText(link);
+        showToast('Storefront link copied.');
+      }catch{
+        showToast('Copy not supported here. Link: ' + link);
+      }
+    });
+
+    const estimateBtn = document.getElementById('estimateBtn');
+    estimateBtn?.addEventListener('click', ()=>{
+      // light, illustrative ROI message
+      showToast('If you save 4 hours/week, that’s ~16 hours/month back.');
+    });
+
+    // Scroll reveal
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(en=>{
+        if(en.isIntersecting){
+          en.target.classList.add('in');
+          io.unobserve(en.target);
+        }
+      });
+    }, {threshold: 0.12});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  </script>
+</body>
+</html>

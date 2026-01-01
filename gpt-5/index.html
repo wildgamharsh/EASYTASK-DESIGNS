@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EasyTask — Booking OS for Modern Event Businesses</title>
+  <meta name="description" content="Everything your event business needs to take bookings — in one place. EasyTask turns interest into confirmed bookings without chaos, confusion, or constant follow-ups."/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      --brand:#0B63F6;
+      --brand-dark:#0847B8;
+      --ink:#0B1324;
+      --muted:#6B7A90;
+      --bg:#F7FBFF;
+      --card:#ffffff;
+      --accent:#39B1FF;
+      --ring: 0 10px 40px rgba(11,99,246,0.2);
+    }
+    html,body{height:100%;}
+    body{font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol", sans-serif; color:var(--ink); background: radial-gradient(1200px 600px at 80% -50%, rgba(57,177,255,0.25), transparent 60%), radial-gradient(900px 500px at -10% 10%, rgba(11,99,246,0.22), transparent 60%), var(--bg);}
+    .btn{display:inline-flex;align-items:center;gap:.55rem;border-radius:999px;font-weight:700;padding:.9rem 1.2rem;transition:.25s transform,.25s box-shadow,.25s background;will-change:transform;white-space:nowrap}
+    .btn-primary{background:linear-gradient(135deg,var(--brand),#2D7BFF); color:#fff; box-shadow: 0 10px 30px rgba(11,99,246,.35);}
+    .btn-primary:hover{transform:translateY(-2px); box-shadow:0 16px 36px rgba(11,99,246,.45);}
+    .btn-outline{border:1px solid rgba(11,99,246,.25); color:var(--brand); background:rgba(255,255,255,.75); backdrop-filter: blur(6px);}
+    .btn-outline:hover{border-color:var(--brand); background:#fff; transform:translateY(-2px)}
+    .tag{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .6rem;border-radius:999px;font-size:.75rem;font-weight:600;background:rgba(11,99,246,.1);color:var(--brand);border:1px solid rgba(11,99,246,.2)}
+    .glass{background:rgba(255,255,255,.75); border:1px solid rgba(11,99,246,.12); backdrop-filter: blur(8px);}
+    .shadow-soft{box-shadow: 0 1px 2px rgba(10,22,50,.06), 0 8px 32px rgba(11,99,246,.08);}
+    .container{max-width:1200px; margin-inline:auto; padding-inline:1.25rem;}
+    .grid-auto{display:grid; grid-template-columns: repeat(12, minmax(0,1fr)); gap:1.25rem;}
+    .hero-gradient{position:absolute; inset:0; background: radial-gradient(1000px 500px at 70% -10%, rgba(11,99,246,.25), transparent 60%), radial-gradient(800px 400px at 10% 0%, rgba(57,177,255,.25), transparent 60%);}
+    .pill{border:1px solid rgba(255,255,255,.45); background: linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,255,255,.35));}
+    .check{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a); display:inline-grid;place-items:center;color:#fff}
+    .nav-blur{backdrop-filter: saturate(150%) blur(8px); background:rgba(255,255,255,.75); border-bottom:1px solid rgba(11,99,246,.08)}
+    .card{background:var(--card); border:1px solid rgba(11,99,246,.10); border-radius:16px; box-shadow: 0 2px 6px rgba(10,22,50,.04), 0 20px 40px rgba(11,99,246,.06);}
+    .stat{display:flex; align-items:center; gap:.75rem}
+    .divider{height:1px; background:linear-gradient(90deg, transparent, rgba(11,99,246,.2), transparent)}
+    .fade-in{animation: fade .7s ease both}
+    @keyframes fade{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)}}
+    .tilt:hover{transform: translateY(-4px) rotateX(2deg) rotateY(-2deg); transition:.25s transform; transform-style: preserve-3d}
+    .badge{font-size:.7rem;padding:.25rem .5rem;border-radius:999px;border:1px solid rgba(11,99,246,.2); color:var(--brand); background: rgba(11,99,246,.05)}
+    .step{counter-increment: step}
+    .step::before{content: counter(step); width:28px;height:28px;border-radius:50%; display:inline-grid;place-items:center;margin-right:.6rem; background:linear-gradient(135deg, var(--brand), #2D7BFF); color:#fff; font-weight:700; font-size:.85rem}
+    .ring{box-shadow: var(--ring)}
+    .mobile-shadow{box-shadow: 0 8px 30px rgba(11,99,246,.25)}
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="nav-blur fixed top-0 inset-x-0 z-50">
+    <div class="container flex items-center justify-between py-3">
+      <a href="#" class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 grid place-items-center text-white font-black">E</div>
+        <span class="font-extrabold text-lg tracking-tight">EasyTask</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-7 text-[15px] text-slate-700">
+        <a href="#features" class="hover:text-blue-600">Features</a>
+        <a href="#how" class="hover:text-blue-600">How it works</a>
+        <a href="#demo" class="hover:text-blue-600">Demo</a>
+        <a href="#pricing" class="hover:text-blue-600">Pricing</a>
+        <a href="#faq" class="hover:text-blue-600">FAQ</a>
+      </nav>
+      <div class="hidden md:flex items-center gap-2">
+        <a href="#demo" class="btn btn-outline">View Demo</a>
+        <a href="#cta" class="btn btn-primary">Start Free</a>
+      </div>
+      <button id="menuBtn" class="md:hidden btn btn-outline px-3 py-2">Menu</button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden border-t border-blue-100 bg-white">
+      <div class="container py-3 flex flex-col gap-3">
+        <a href="#features" class="py-2">Features</a>
+        <a href="#how" class="py-2">How it works</a>
+        <a href="#demo" class="py-2">Demo</a>
+        <a href="#pricing" class="py-2">Pricing</a>
+        <a href="#faq" class="py-2">FAQ</a>
+        <div class="pt-2 flex gap-2">
+          <a href="#demo" class="btn btn-outline flex-1 justify-center">View Demo</a>
+          <a href="#cta" class="btn btn-primary flex-1 justify-center">Start Free</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative pt-28 md:pt-32">
+    <div class="hero-gradient pointer-events-none"></div>
+    <div class="container grid-auto items-center">
+      <div class="col-span-12 lg:col-span-6 fade-in">
+        <div class="tag mb-4 w-fit pill">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          Everything your event business needs — in one place
+        </div>
+        <h1 class="text-4xl md:text-6xl font-black leading-tight tracking-tight">
+          Turn interest into confirmed bookings — without chaos
+        </h1>
+        <p class="text-slate-600 mt-4 text-lg md:text-xl">
+          EasyTask gives decorators, caterers, and planners a single system to run their business online.
+          Clean storefront, real availability, instant bookings—no code, no juggling tools.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3 mt-7">
+          <a href="#cta" class="btn btn-primary text-base px-6">
+            Get Started Free
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+          </a>
+          <a href="#demo" class="btn btn-outline text-base px-6">See Interactive Demo</a>
+        </div>
+
+        <div class="flex items-center gap-6 mt-8 text-sm text-slate-600">
+          <div class="stat">
+            <div class="check"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></div>
+            Fewer follow-ups
+          </div>
+          <div class="stat">
+            <div class="check"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></div>
+            No double bookings
+          </div>
+          <div class="stat">
+            <div class="check"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></div>
+            Professional experience
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Mockup -->
+      <div class="col-span-12 lg:col-span-6 mt-10 lg:mt-0 fade-in">
+        <div class="relative">
+          <div class="absolute -inset-4 bg-gradient-to-tr from-blue-500/20 via-blue-400/10 to-transparent rounded-3xl blur-2xl"></div>
+          <div class="card ring relative overflow-hidden rounded-2xl tilt">
+            <div class="flex items-center justify-between px-5 py-3 border-b border-slate-100">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-red-400"></span>
+                <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+                <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+              </div>
+              <div class="badge">Live storefront</div>
+            </div>
+            <div class="grid md:grid-cols-2">
+              <div class="p-5 md:p-6">
+                <h3 class="font-bold text-xl mb-1">Elegant Marquee Setup</h3>
+                <p class="text-slate-600 text-sm">Perfect for weddings and galas. Capacity: 120 guests.</p>
+                <div class="flex items-center gap-2 mt-4">
+                  <span class="badge">Decor</span><span class="badge">Lighting</span><span class="badge">Seating</span>
+                </div>
+                <div class="divider my-5"></div>
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="text-slate-500 text-xs">Starting at</div>
+                    <div class="text-2xl font-extrabold">$1,800</div>
+                  </div>
+                  <button class="btn btn-primary">Book Now</button>
+                </div>
+              </div>
+              <div class="relative bg-gradient-to-br from-blue-50 to-white p-4 md:p-6">
+                <div class="glass rounded-xl p-3 shadow-soft">
+                  <div class="flex justify-between items-center">
+                    <div>
+                      <div class="text-xs text-slate-500">Availability</div>
+                      <div class="font-semibold">June 2026</div>
+                    </div>
+                    <div class="flex gap-2">
+                      <button class="badge">Prev</button>
+                      <button class="badge">Next</button>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-7 gap-1 text-center text-xs mt-3">
+                    <div class="text-slate-400">S</div><div class="text-slate-400">M</div><div class="text-slate-400">T</div><div class="text-slate-400">W</div><div class="text-slate-400">T</div><div class="text-slate-400">F</div><div class="text-slate-400">S</div>
+                    <!-- simple calendar -->
+                    <template id="days"></template>
+                  </div>
+                  <div class="grid grid-cols-7 gap-1 text-center text-xs mt-2" id="calendarGrid"></div>
+                </div>
+                <div class="mt-4 glass rounded-xl p-3 flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+                    <span class="text-sm">You’re available</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
+                    <span class="text-sm">Limited</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
+                    <span class="text-sm">Booked</span>
+                  </div>
+                </div>
+                <div class="absolute -bottom-6 -left-6 rotate-6 blur-[1px] opacity-20">
+                  <img alt="decor" src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1200&auto=format&fit=crop" class="w-40 h-28 object-cover rounded-xl">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="absolute -right-3 -bottom-6 md:-right-6 md:-bottom-8">
+            <div class="glass rounded-2xl px-4 py-3 shadow-soft mobile-shadow">
+              <div class="text-xs text-slate-500">Next booking</div>
+              <div class="font-semibold">Sat, Jun 6 — 2:00 PM</div>
+              <div class="text-xs text-slate-500">Client: M. Patel</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social proof -->
+  <section class="container mt-16 md:mt-20">
+    <div class="glass rounded-2xl p-4 md:p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <img src="https://images.unsplash.com/photo-1544006659-f0b21884ce1d?q=80&w=200&auto=format&fit=crop" class="w-9 h-9 rounded-full object-cover" alt="">
+        <div class="text-sm">
+          <span class="font-semibold">“We stopped losing weekends to WhatsApp.”</span>
+          <span class="text-slate-600"> — Bliss Events</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-6 opacity-70">
+        <img src="https://dummyimage.com/90x26/ffffff/0b63f6&text=DecorCo" class="h-6" alt="">
+        <img src="https://dummyimage.com/90x26/ffffff/0b63f6&text=CaterPro" class="h-6" alt="">
+        <img src="https://dummyimage.com/90x26/ffffff/0b63f6&text=PartyLab" class="h-6" alt="">
+        <img src="https://dummyimage.com/90x26/ffffff/0b63f6&text=Flora" class="h-6" alt="">
+      </div>
+    </div>
+  </section>
+
+  <!-- Pain to Promise -->
+  <section id="features" class="container mt-16 md:mt-24">
+    <div class="grid-auto">
+      <div class="col-span-12 lg:col-span-5">
+        <h2 class="text-3xl md:text-4xl font-extrabold">From scattered operations to a single source of truth</h2>
+        <p class="text-slate-600 mt-3">Stop managing inquiries in chat, availability in your head, pricing in PDFs, and bookings by hand. EasyTask centralizes every moving piece.</p>
+      </div>
+      <div class="col-span-12 lg:col-span-7 grid md:grid-cols-2 gap-4 mt-6 lg:mt-0">
+        <div class="card p-5 tilt">
+          <div class="badge mb-3">Storefront</div>
+          <h3 class="font-bold text-xl">Clean, bookable website</h3>
+          <p class="text-slate-600 mt-1">Show services, packages, and FAQs with trust-building design.</p>
+          <ul class="mt-4 space-y-2 text-sm text-slate-700">
+            <li><span class="check mr-2"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></span>Service pages with media & pricing</li>
+            <li><span class="check mr-2"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></span>Instant, guided checkout</li>
+          </ul>
+        </div>
+        <div class="card p-5 tilt">
+          <div class="badge mb-3">Calendar</div>
+          <h3 class="font-bold text-xl">Real availability</h3>
+          <p class="text-slate-600 mt-1">Customers can only book when you’re free—no more overlaps.</p>
+          <ul class="mt-4 space-y-2 text-sm text-slate-700">
+            <li><span class="check mr-2"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></span>Blackout dates & buffers</li>
+            <li><span class="check mr-2"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></span>Sync with Google/Apple</li>
+          </ul>
+        </div>
+        <div class="card p-5 tilt">
+          <div class="badge mb-3">Payments</div>
+          <h3 class="font-bold text-xl">Deposits & milestones</h3>
+          <p class="text-slate-600 mt-1">Take deposits now and auto-remind for balance later.</p>
+          <ul class="mt-4 space-y-2 text-sm text-slate-700">
+            <li><span class="check mr-2"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></span>Secure checkout</li>
+            <li><span class="check mr-2"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></span>Invoices & receipts</li>
+          </ul>
+        </div>
+        <div class="card p-5 tilt">
+          <div class="badge mb-3">Automation</div>
+          <h3 class="font-bold text-xl">No more chasing</h3>
+          <p class="text-slate-600 mt-1">Auto confirmations, reminders, and smart follow-ups.</p>
+          <ul class="mt-4 space-y-2 text-sm text-slate-700">
+            <li><span class="check mr-2"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></span>Templates & pipelines</li>
+            <li><span class="check mr-2"><svg viewBox="0 0 20 20  " class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></span>Analytics & insights</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how" class="container mt-20 md:mt-28">
+    <div class="text-center">
+      <div class="tag mx-auto">How it works</div>
+      <h2 class="text-3xl md:text-4xl font-extrabold mt-3">Your operating system for bookings</h2>
+      <p class="text-slate-600 mt-2">Set up once, operate clearly, book confidently.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-4 mt-8">
+      <div class="card p-6">
+        <h3 class="step font-semibold text-lg mb-2">Set services & availability</h3>
+        <p class="text-slate-600">Add packages, prices, and blackout dates. Your storefront updates instantly.</p>
+        <div class="mt-4 glass rounded-lg p-3 text-sm">
+          Tip: Use buffers to avoid back-to-back setups.
+        </div>
+      </div>
+      <div class="card p-6">
+        <h3 class="step font-semibold text-lg mb-2">Share your storefront</h3>
+        <p class="text-slate-600">Drop your link on Instagram, WhatsApp, or your domain. Customers browse and book.</p>
+        <div class="mt-4 flex gap-2">
+          <span class="badge">Custom domain</span><span class="badge">Embed widget</span>
+        </div>
+      </div>
+      <div class="card p-6">
+        <h3 class="step font-semibold text-lg mb-2">Automate the busywork</h3>
+        <p class="text-slate-600">Automatic confirmations, reminders, and payment schedules keep things moving.</p>
+        <div class="mt-4 flex gap-2">
+          <span class="badge">Deposits</span><span class="badge">Milestones</span><span class="badge">Reminders</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Demo -->
+  <section id="demo" class="container mt-20 md:mt-28">
+    <div class="grid lg:grid-cols-2 gap-6 items-start">
+      <div>
+        <h2 class="text-3xl md:text-4xl font-extrabold">Try a quick booking demo</h2>
+        <p class="text-slate-600 mt-2">Pick a service, choose a date, and see the guided checkout flow.</p>
+        <div class="card p-5 mt-4">
+          <label class="text-sm text-slate-600">Service</label>
+          <select id="serviceSelect" class="mt-1 w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500/40">
+            <option value="marquee" data-price="1800">Elegant Marquee Setup — from $1,800</option>
+            <option value="catering" data-price="2400">Signature Catering — from $2,400</option>
+            <option value="kids" data-price="650">Kids’ Party Package — from $650</option>
+          </select>
+          <div class="mt-4 grid sm:grid-cols-2 gap-3">
+            <div>
+              <label class="text-sm text-slate-600">Date</label>
+              <input id="dateInput" type="date" class="mt-1 w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500/40"/>
+            </div>
+            <div>
+              <label class="text-sm text-slate-600">Start time</label>
+              <input id="timeInput" type="time" class="mt-1 w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500/40"/>
+            </div>
+          </div>
+          <div class="mt-4 grid sm:grid-cols-2 gap-3">
+            <div>
+              <label class="text-sm text-slate-600">Name</label>
+              <input id="nameInput" type="text" placeholder="Your full name" class="mt-1 w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500/40"/>
+            </div>
+            <div>
+              <label class="text-sm text-slate-600">Email</label>
+              <input id="emailInput" type="email" placeholder="you@example.com" class="mt-1 w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500/40"/>
+            </div>
+          </div>
+          <div class="mt-4 flex items-center gap-2 text-sm text-slate-600">
+            <input id="depositToggle" type="checkbox" class="accent-blue-600"/>
+            <label for="depositToggle">Pay deposit now (30%)</label>
+          </div>
+          <div class="divider my-4"></div>
+          <div class="flex items-center justify-between">
+            <div class="text-slate-600 text-sm">Total today</div>
+            <div id="totalToday" class="text-2xl font-extrabold">$0</div>
+          </div>
+          <button id="bookBtn" class="btn btn-primary w-full justify-center mt-4">Confirm Booking</button>
+          <p id="bookMsg" class="hidden mt-3 text-sm text-emerald-600 font-medium">Booking confirmed! A confirmation email has been sent.</p>
+        </div>
+      </div>
+      <div class="card p-5 lg:sticky lg:top-24">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-lg">Live Availability</h3>
+          <div class="badge">Demo</div>
+        </div>
+        <div id="availability" class="grid grid-cols-7 gap-2 text-center text-sm mt-4"></div>
+        <div class="mt-4 text-xs text-slate-500">Note: Demo availability is simulated for this preview.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Outcomes -->
+  <section class="container mt-20 md:mt-28">
+    <div class="grid md:grid-cols-3 gap-4">
+      <div class="card p-6">
+        <h3 class="font-bold text-xl">Fewer back-and-forths</h3>
+        <p class="text-slate-600 mt-2">Clear options, live dates, and a guided checkout cut out repetitive questions.</p>
+      </div>
+      <div class="card p-6">
+        <h3 class="font-bold text-xl">No double bookings</h3>
+        <p class="text-slate-600 mt-2">Hold times, buffers, and synced calendars ensure clean schedules.</p>
+      </div>
+      <div class="card p-6">
+        <h3 class="font-bold text-xl">Professional experience</h3>
+        <p class="text-slate-600 mt-2">A polished storefront builds trust and converts interest into orders.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="container mt-20 md:mt-28">
+    <div class="text-center">
+      <div class="tag mx-auto">Flexible pricing</div>
+      <h2 class="text-3xl md:text-4xl font-extrabold mt-3">Start free. Upgrade when you’re ready.</h2>
+      <p class="text-slate-600 mt-2">No setup fees. Cancel anytime.</p>
+    </div>
+    <div class="grid lg:grid-cols-3 gap-4 mt-8">
+      <div class="card p-6">
+        <div class="badge mb-2">Starter</div>
+        <div class="text-3xl font-black">$0</div>
+        <div class="text-slate-600 text-sm">per month</div>
+        <ul class="mt-4 space-y-2 text-sm">
+          <li><span class="check mr-2"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></span>Storefront & basic bookings</li>
+          <li><span class="check mr-2"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></span>Manual approvals</li>
+          <li><span class="check mr-2"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></span>Email notifications</li>
+        </ul>
+        <a href="#cta" class="btn btn-outline w-full justify-center mt-5">Get Started</a>
+      </div>
+      <div class="card p-6 ring relative">
+        <div class="absolute -top-3 left-6 badge bg-blue-600 text-white border-blue-600">Most Popular</div>
+        <div class="badge mb-2">Pro</div>
+        <div class="text-3xl font-black">$49</div>
+        <div class="text-slate-600 text-sm">per month</div>
+        <ul class="mt-4 space-y-2 text-sm">
+          <li><span class="check mr-2"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></span>Live availability & buffers</li>
+          <li><span class="check mr-2"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></span>Deposits & milestones</li>
+          <li><span class="check mr-2"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></span>Reminders & automations</li>
+        </ul>
+        <a href="#cta" class="btn btn-primary w-full justify-center mt-5">Start Free Trial</a>
+      </div>
+      <div class="card p-6">
+        <div class="badge mb-2">Business</div>
+        <div class="text-3xl font-black">$129</div>
+        <div class="text-slate-600 text-sm">per month</div>
+        <ul class="mt-4 space-y-2 text-sm">
+          <li><span class="check mr-2"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></span>Team roles & permissions</li>
+          <li><span class="check mr-2"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></span>Advanced analytics</li>
+          <li><span class="check mr-2"><svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 10.5l3 3 7-7"/></svg></span>Priority support</li>
+        </ul>
+        <a href="#cta" class="btn btn-outline w-full justify-center mt-5">Talk to Sales</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta" class="container mt-20 md:mt-28 mb-16">
+    <div class="relative overflow-hidden rounded-2xl p-6 md:p-10 bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700 text-white">
+      <div class="absolute inset-0 opacity-25" style="background: radial-gradient(600px 300px at 20% 10%, #fff, transparent 60%), radial-gradient(700px 500px at 80% 90%, #39B1FF, transparent 60%);"></div>
+      <div class="relative grid md:grid-cols-2 gap-6 items-center">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-black leading-tight">EasyTask is not another tool. It’s your booking OS.</h2>
+          <p class="mt-2 text-blue-100">Run your entire event business from one dashboard. Spend time delivering events, not managing chaos.</p>
+          <div class="flex flex-wrap gap-3 mt-5">
+            <span class="pill tag text-white border-white/40 bg-white/10">Trust</span>
+            <span class="pill tag text-white border-white/40 bg-white/10">Commitment</span>
+            <span class="pill tag text-white border-white/40 bg-white/10">Professionalism</span>
+          </div>
+        </div>
+        <div class="glass rounded-xl p-4 md:p-5 text-slate-900">
+          <form id="signupForm" class="grid gap-3">
+            <input type="text" placeholder="Business name" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500/40" required>
+            <input type="email" placeholder="Work email" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500/40" required>
+            <button class="btn btn-primary justify-center">Create my free account</button>
+            <p id="signupMsg" class="hidden text-emerald-600 text-sm font-medium">Welcome aboard! Check your inbox to verify.</p>
+            <p class="text-xs text-slate-600">By creating an account, you agree to our Terms and Privacy Policy.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="container mb-24">
+    <div class="text-center mb-6">
+      <h2 class="text-3xl md:text-4xl font-extrabold">FAQs</h2>
+      <p class="text-slate-600 mt-2">Quick answers to common questions.</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4">
+      <details class="card p-5">
+        <summary class="font-semibold cursor-pointer">Can I require deposits?</summary>
+        <p class="text-slate-600 mt-2">Yes. Collect a flat fee or percentage and schedule automatic balance reminders.</p>
+      </details>
+      <details class="card p-5">
+        <summary class="font-semibold cursor-pointer">How does availability work?</summary>
+        <p class="text-slate-600 mt-2">Block out dates, add buffers, and sync with external calendars to prevent overlaps.</p>
+      </details>
+      <details class="card p-5">
+        <summary class="font-semibold cursor-pointer">Can I customize my storefront?</summary>
+        <p class="text-slate-600 mt-2">Fully. Edit content, images, and services—no code required.</p>
+      </details>
+      <details class="card p-5">
+        <summary class="font-semibold cursor-pointer">Do you support teams?</summary>
+        <p class="text-slate-600 mt-2">Yes. Roles and permissions ensure the right access for each team member.</p>
+      </details>
+    </div>
+  </section>
+
+  <footer class="border-t border-blue-100">
+    <div class="container py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 grid place-items-center text-white font-black">E</div>
+        <span class="font-bold">EasyTask</span>
+      </div>
+      <div class="text-slate-600 text-sm">© <span id="year"></span> EasyTask, Inc. All rights reserved.</div>
+      <div class="flex gap-4 text-sm">
+        <a href="#" class="hover:text-blue-600">Privacy</a>
+        <a href="#" class="hover:text-blue-600">Terms</a>
+        <a href="#" class="hover:text-blue-600">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    if(menuBtn){
+      menuBtn.addEventListener('click', ()=> mobileMenu.classList.toggle('hidden'));
+    }
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Hero mini calendar rendering (availability legend demo)
+    (function renderHeroCalendar(){
+      const grid = document.getElementById('calendarGrid');
+      if(!grid) return;
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = today.getMonth();
+      const first = new Date(year, month, 1);
+      const startDay = first.getDay();
+      const daysInMonth = new Date(year, month+1, 0).getDate();
+      const frag = document.createDocumentFragment();
+
+      for(let i=0;i<startDay;i++){
+        const cell = document.createElement('div'); cell.className="py-2 text-slate-300"; cell.textContent=""; frag.appendChild(cell);
+      }
+      for(let d=1; d<=daysInMonth; d++){
+        const cell = document.createElement('div');
+        const statusRand = Math.random();
+        let dot = 'bg-emerald-500';
+        if(statusRand > .8) dot = 'bg-rose-500';
+        else if(statusRand > .6) dot = 'bg-amber-400';
+        cell.className = "py-2 rounded-lg hover:bg-blue-50 cursor-default relative";
+        cell.innerHTML = '<div class="text-xs text-slate-600">'+d+'</div><div class="w-1.5 h-1.5 rounded-full '+dot+' absolute right-1.5 top-1.5"></div>';
+        frag.appendChild(cell);
+      }
+      grid.appendChild(frag);
+    })();
+
+    // Demo availability bars
+    (function renderAvailability(){
+      const container = document.getElementById('availability');
+      if(!container) return;
+      const days = ['S','M','T','W','T','F','S'];
+      for(let i=0;i<14;i++){
+        const slot = document.createElement('div');
+        const level = Math.random();
+        let color = 'bg-emerald-500', label='Open';
+        if(level > .75){ color='bg-rose-500'; label='Booked' }
+        else if(level > .5){ color='bg-amber-400'; label='Limited' }
+        slot.className = "glass rounded-md p-2";
+        slot.innerHTML = `
+          <div class="text-[10px] text-slate-500">${days[i%7]}</div>
+          <div class="h-2 w-full bg-slate-100 rounded mt-1 overflow-hidden">
+            <div class="h-full ${color}" style="width:${Math.floor(level*100)}%"></div>
+          </div>
+          <div class="text-[10px] text-slate-500 mt-1">${label}</div>
+        `;
+        container.appendChild(slot);
+      }
+    })();
+
+    // Booking demo calculations
+    const serviceSelect = document.getElementById('serviceSelect');
+    const depositToggle = document.getElementById('depositToggle');
+    const totalToday = document.getElementById('totalToday');
+    function updateTotal(){
+      const price = Number(serviceSelect.selectedOptions[0].dataset.price || 0);
+      const todayDue = depositToggle.checked ? Math.round(price*0.3) : price;
+      totalToday.textContent = `$${todayDue.toLocaleString()}`;
+    }
+    serviceSelect.addEventListener('change', updateTotal);
+    depositToggle.addEventListener('change', updateTotal);
+    updateTotal();
+
+    // Confirm booking
+    const bookBtn = document.getElementById('bookBtn');
+    const bookMsg = document.getElementById('bookMsg');
+    bookBtn.addEventListener('click', ()=>{
+      const name = document.getElementById('nameInput').value.trim();
+      const email = document.getElementById('emailInput').value.trim();
+      const date = document.getElementById('dateInput').value;
+      const time = document.getElementById('timeInput').value;
+      if(!name || !email || !date || !time){
+        bookMsg.textContent = "Please fill all details to proceed.";
+        bookMsg.classList.remove('text-emerald-600');
+        bookMsg.classList.add('text-rose-600');
+        bookMsg.classList.remove('hidden');
+        return;
+      }
+      bookMsg.textContent = "Booking confirmed! A confirmation email has been sent.";
+      bookMsg.classList.remove('text-rose-600');
+      bookMsg.classList.add('text-emerald-600');
+      bookMsg.classList.remove('hidden');
+      bookMsg.scrollIntoView({behavior:'smooth', block:'center'});
+    });
+
+    // Signup
+    const signupForm = document.getElementById('signupForm');
+    const signupMsg = document.getElementById('signupMsg');
+    signupForm.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      signupMsg.classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
